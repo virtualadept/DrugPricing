@@ -14,8 +14,8 @@ print "<HTML>\n
   		border-collapse: collapse;
 	}
 	th, td {
-  		padding: 15px;
-  		text-align: left;
+  		padding: 5px;
+  		text-align: center;
 	}
 	table#t01 tr:nth-child(even) {
   		background-color: #eee;
@@ -74,7 +74,7 @@ $ndc = substr($fullndc,0,-2);
 
 // START HEADER
 //
-print "<table>";
+print "<table id=\"t01\">";
 print "<tr>\n";
 $headerquery = "SELECT ndc,ndc_description FROM nadac WHERE ndc LIKE \"$ndc%\" LIMIT 1";
 if ($headerresult = mysqli_query($mysqli,$headerquery)){
