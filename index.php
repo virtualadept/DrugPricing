@@ -90,7 +90,7 @@ print "</tr>\n";
 // START FUL GRAB
 //
 print "<tr><td><b><center>FUL PER UNIT</center></b></td><td><b><center>AS OF DATE</center></b></td></tr>";
-$fulquery = "SELECT DISTINCT(aca_ful),date FROM ful WHERE ndc LIKE \"$ndc%\" AND date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY date DESC";
+$fulquery = "SELECT DISTINCT(aca_ful),date,month,year FROM ful WHERE ndc LIKE \"$ndc%\" AND date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY date DESC";
 //print "<b>$fulquery</b><br>\n";
 $fultime = microtime(true);
 if ($fulresult = mysqli_query($mysqli,$fulquery)) {
@@ -99,7 +99,7 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 		print "<td><center>No FUL Data Found</center></td>\n";
 	}
 	while ($ful = mysqli_fetch_assoc($fulresult)){
-		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['date'] . "</td></tr>";
+		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . $ful['month'] . "</td></tr>";
 	}
 }
 //
