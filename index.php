@@ -15,7 +15,7 @@ print "<HTML>\n
 	}
 	th, td {
   		padding: 5px;
-  		text-align: center;
+  		text-align: left;
 	}
 	table#t01 tr:nth-child(even) {
   		background-color: #eee;
