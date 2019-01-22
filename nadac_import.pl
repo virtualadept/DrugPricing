@@ -39,6 +39,9 @@ foreach $csv (<STDIN>) {
 	# We dont care about shit in here, so just outright delete it.
 	$csv =~ s/\"[0-9]\, *[0-9]\"//g;
 	
+	# I swear I cant win.
+	$csv =~ tr/"//d;
+
 	# Yeah, this is ghetto.
 	($ndc_description,$ndc,$nadac_per_unit,$effective_date,$pricing_unit,$pharmacy_type_indicator,$otc,$explanation_code,$classification_for_rate_setting,$corresponding_generic_drug_nadac_per_unit,$corresponding_generic_drug_effective_date,$as_of_date) = split(',',$csv);
 	
