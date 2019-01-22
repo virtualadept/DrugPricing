@@ -98,7 +98,7 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 		print "<td><center>No FUL Data Found</center></td>\n";
 	}
 	while ($ful = mysqli_fetch_assoc($fulresult)){
-		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . $ful['month'] . "</td></tr>";
+		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . ($ful['month'] < 10 ? '0'.$ful['month'] : $ful['month']) . "</td></tr>";
 	}
 }
 //
@@ -117,7 +117,7 @@ if ($nadacresult = mysqli_query($mysqli,$nadacquery)) {
 		print "<td><center>No NADAC Data Found</center></td>\n";
 	}
 	while ($nadac = mysqli_fetch_assoc($nadacresult)) {
-		echo "<td>" . $nadac['nadac_per_unit'] . "</td><td>" . $nadac['as_of_date'] . "</td></tr>";
+		echo "<td>" . $nadac['nadac_per_unit'] . "</td><td>" . str_replace("00:00:00","",$nadac['as_of_date']) . "</td></tr>";
 	}
 }
 //
