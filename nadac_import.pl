@@ -14,9 +14,13 @@
 # explanation_code varchar(10),
 # classification_for_rate_setting varchar(10),
 # corresponding_generic_drug_nadac_per_unit float(10),
-# corresponding_generic_drug_effective_date datetime NOT NULL,
-# as_of_date datetime NOT NULL,
+# corresponding_generic_drug_effective_date datetime,
+# as_of_date datetime,
 # PRIMARY KEY (rowid));
+#
+
+# Turn terminal buffering off!
+$|=1;
 
 use DBI;
 
@@ -30,11 +34,14 @@ $db=$dbh->prepare("INSERT INTO nadac (ndc_description,ndc,nadac_per_unit,effecti
 
 foreach $csv (<STDIN>) {
 	chomp $csv;
+	# NAFTIN 2% GEL,54766077260,8.31743,06/20/2018,GM,C/I,N,"4, 5",B,,,12/12/2018
+	# Having a "4, 5" in one field defeats the purpose of a CSV!@#!@
+	# We dont care about shit in here, so just outright delete it.
+	$csv =~ s/\"[0-9]\, *[0-9]\"//g;
+	
 	# Yeah, this is ghetto.
 	($ndc_description,$ndc,$nadac_per_unit,$effective_date,$pricing_unit,$pharmacy_type_indicator,$otc,$explanation_code,$classification_for_rate_setting,$corresponding_generic_drug_nadac_per_unit,$corresponding_generic_drug_effective_date,$as_of_date) = split(',',$csv);
 	
-	# Why do some drug descriptions have "'s?
-	$ndc_description =~ tr/"//d;
 
 	# This is more ghetto
 	# Rearrange the D/M/Y -> Y/M/D cuz Freedom Units rule!
