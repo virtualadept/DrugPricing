@@ -38,6 +38,7 @@ foreach $csv (<STDIN>) {
 	# Having a "4, 5" in one field defeats the purpose of a CSV!@#!@
 	# We dont care about shit in here, so just outright delete it.
 	$csv =~ s/\"[0-9]\, *[0-9]\"//g;
+	$csv =~ s/\"[0-9]\, *[0-9]\, *[0-9]\"//g;
 	
 	# I swear I cant win.
 	$csv =~ tr/"//d;
