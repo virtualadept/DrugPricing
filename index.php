@@ -74,15 +74,14 @@ $ndc = substr($fullndc,0,-2);
 
 // START HEADER
 //
-print "<table id=\"t01\">";
-print "<tr>\n";
 $headerquery = "SELECT ndc,ndc_description FROM nadac WHERE ndc LIKE \"$ndc%\" LIMIT 1";
 if ($headerresult = mysqli_query($mysqli,$headerquery)){
 	while ($header = mysqli_fetch_assoc($headerresult)) {
-		echo "<th><center>Query NDC:$ndc</center></th><th><center>Full NDC:" . $header['ndc'] . "</center></th>\n<th><center>" . $header['ndc_description'] . "</center></th><th><center>From: $startmonth-$startyear</center></th><th><center>To: $endmonth-$endyear</center></th><br>\n";
+		echo "<table id=\"t01\"><tr><th><center>Query NDC:$ndc</center></th><th><center>Full NDC:" . $header['ndc'] . "</center></th></tr></table>";
+		echo "<table id=\"t01\"><tr><th><center>" . $header['ndc_description'] . "</center></th></tr></table>";
+		echo "<table id=\"t01\"><tr><th><center>From: $startmonth-$startyear</center></th><th><center>To: $endmonth-$endyear</center></th></tr>\n";
 	}
 }
-print "</tr>\n";
 //
 // END HEADER
 
