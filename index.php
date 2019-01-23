@@ -100,7 +100,7 @@ if ($headerresult = mysqli_query($mysqli,$headerquery)){
 	while ($header = mysqli_fetch_assoc($headerresult)) {
 		echo "<table id=\"t01\"><tr><th><center>Query NDC:$ndc</center></th><th><center>Full NDC:" . $header['ndc'] . "</center></th></tr></table>";
 		echo "<table id=\"t01\"><tr><th><center>" . $header['ndc_description'] . "</center></th></tr></table>";
-		echo "<table id=\"t01\"><tr><th><center>From: $startmonth-$startyear</center></th><th><center>To: $endmonth-$endyear</center></th></tr>\n";
+		echo "<table id=\"t01\"><tr><th><center>From: $startmonth-$startyear</center></th><th></th><th><center>To: $endmonth-$endyear</center></th></tr>\n";
 	}
 }
 //
