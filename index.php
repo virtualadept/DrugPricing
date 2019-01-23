@@ -44,8 +44,8 @@ $dispquan = $mysqli->real_escape_string($_GET['dispquan']);
 $debug = "<center>------Log Start------</center>\n";
 $debug .= "<p><b>" . date(DATE_RFC2822) . "</b>\n";
 
-if ($dispfee = undef) { $dispfee = "0"; }
-if ($dispquan = undef) { $dispquan = "0"; }
+if (!$dispfee) { $dispfee = "0"; }
+if (!$dispquan) { $dispquan = "0"; }
 
 // Entry Form
 print "<center><form action=\"index.php\" method=\"get\">\n
@@ -69,13 +69,6 @@ if ($dispfee && $dispquan == 0) {
 	print "If you have a fee, you need a quant";
 	exit;
 }
-
-/*
-if ($dispfee == 0 && $dispquan) {
-	print "If you have a quan, you need a fee";
-	exit;
-}
- */
 
 
 if (!is_numeric($fullndc) || !is_numeric($startmonth) || !is_numeric($startyear) || !is_numeric($endmonth) || !is_numeric($endyear)) {
@@ -112,7 +105,7 @@ if ($headerresult = mysqli_query($mysqli,$headerquery)){
 print "<tr><td><b><center>FUL PER UNIT</center></b></td><td><b><center>AS OF DATE</center></b></td><td><b><center>PAID (#$dispquan + $dispfee)</center></b></tr>";
 
 $fulquery = "SELECT DISTINCT(aca_ful),date,month,year FROM ful WHERE ndc LIKE \"$ndc%\" AND date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY date DESC";
-$amtpaid = 0;
+$fulamtpaid = 0;
 $fultime = microtime(true);
 if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 	$fultime = microtime(true)-$fultime;
@@ -121,7 +114,7 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 	}
 	while ($ful = mysqli_fetch_assoc($fulresult)){
 		$amtpaid = ($ful['aca_ful'] * $dispquan) + $dispfee;
-		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . ($ful['month'] < 10 ? '0'.$ful['month'] : $ful['month']) . "</td><td>$amtpaid</td></tr>";
+		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . ($ful['month'] < 10 ? '0'.$ful['month'] : $ful['month']) . "</td><td>$fulamtpaid</td></tr>";
 	}
 }
 //
@@ -132,7 +125,7 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 //
 print "<tr><td><b><center>NADAC PER UNIT</center></b></td><td><b><center>AS OF DATE</center></b></td><td><b><center>PAID (#$dispquan + $dispfee)</center></td></tr>";
 $nadacquery = "SELECT DISTINCT(nadac_per_unit),as_of_date FROM nadac WHERE ndc LIKE \"$ndc%\" AND as_of_date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY as_of_date DESC";
-$ampaid = 0;
+$nadacamtpaid = 0;
 $nadactime = microtime(true);
 if ($nadacresult = mysqli_query($mysqli,$nadacquery)) {
 	$nadactime = microtime(true)-$nadactime;
@@ -141,7 +134,7 @@ if ($nadacresult = mysqli_query($mysqli,$nadacquery)) {
 	}
 	while ($nadac = mysqli_fetch_assoc($nadacresult)) {
 		$amtpaid = ($nadac['nadac_per_unit'] * $dispquan) + $dispfee;
-		echo "<td>" . $nadac['nadac_per_unit'] . "</td><td>" . str_replace("00:00:00","",$nadac['as_of_date']) . "</td><td>$amtpaid</td></tr>";
+		echo "<td>" . $nadac['nadac_per_unit'] . "</td><td>" . str_replace("00:00:00","",$nadac['as_of_date']) . "</td><td>$nadacamtpaid</td></tr>";
 	}
 }
 //
