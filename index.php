@@ -105,7 +105,6 @@ if ($headerresult = mysqli_query($mysqli,$headerquery)){
 print "<tr><td><b><center>FUL PER UNIT</center></b></td><td><b><center>AS OF DATE</center></b></td><td><b><center>PAID (#$dispquan + $dispfee)</center></b></tr>";
 
 $fulquery = "SELECT DISTINCT(aca_ful),date,month,year FROM ful WHERE ndc LIKE \"$ndc%\" AND date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY date DESC";
-$fulamtpaid = 0;
 $fultime = microtime(true);
 if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 	$fultime = microtime(true)-$fultime;
@@ -113,7 +112,8 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 		print "<td><center>No FUL Data Found</center></td>\n";
 	}
 	while ($ful = mysqli_fetch_assoc($fulresult)){
-		$amtpaid = ($ful['aca_ful'] * $dispquan) + $dispfee;
+		$fulamtpaid = 0;
+		$fulamtpaid = ($ful['aca_ful'] * $dispquan) + $dispfee;
 		echo "<td>" . $ful['aca_ful'] . "</td><td>" . $ful['year'] . "-" . ($ful['month'] < 10 ? '0'.$ful['month'] : $ful['month']) . "</td><td>$fulamtpaid</td></tr>";
 	}
 }
@@ -125,7 +125,6 @@ if ($fulresult = mysqli_query($mysqli,$fulquery)) {
 //
 print "<tr><td><b><center>NADAC PER UNIT</center></b></td><td><b><center>AS OF DATE</center></b></td><td><b><center>PAID (#$dispquan + $dispfee)</center></td></tr>";
 $nadacquery = "SELECT DISTINCT(nadac_per_unit),as_of_date FROM nadac WHERE ndc LIKE \"$ndc%\" AND as_of_date BETWEEN CAST(\"$startyear-$startmonth-01\" AS DATE) AND CAST(\"$endyear-$endmonth-31\" AS DATE)  ORDER BY as_of_date DESC";
-$nadacamtpaid = 0;
 $nadactime = microtime(true);
 if ($nadacresult = mysqli_query($mysqli,$nadacquery)) {
 	$nadactime = microtime(true)-$nadactime;
@@ -133,7 +132,8 @@ if ($nadacresult = mysqli_query($mysqli,$nadacquery)) {
 		print "<td><center>No NADAC Data Found</center></td>\n";
 	}
 	while ($nadac = mysqli_fetch_assoc($nadacresult)) {
-		$amtpaid = ($nadac['nadac_per_unit'] * $dispquan) + $dispfee;
+		$nadacamtpaid = 0;
+		$nadacamtpaid = ($nadac['nadac_per_unit'] * $dispquan) + $dispfee;
 		echo "<td>" . $nadac['nadac_per_unit'] . "</td><td>" . str_replace("00:00:00","",$nadac['as_of_date']) . "</td><td>$nadacamtpaid</td></tr>";
 	}
 }
