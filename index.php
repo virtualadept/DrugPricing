@@ -44,8 +44,8 @@ $dispquan = $mysqli->real_escape_string($_GET['dispquan']);
 $debug = "<center>------Log Start------</center>\n";
 $debug .= "<p><b>" . date(DATE_RFC2822) . "</b>\n";
 
-if (!$dispfee) { $dispfee = "0"; }
-if (!$dispquan) { $dispquan = "0"; }
+if ($dispfee = undef) { $dispfee = "0"; }
+if ($dispquan = undef) { $dispquan = "0"; }
 
 // Entry Form
 print "<center><form action=\"index.php\" method=\"get\">\n
